@@ -474,6 +474,3 @@ def generate_navigator_js(os: nil, navigator: nil, platform: nil, device_type: n
     'buildID' => config['build_id']
   }
 end
-
-p generate_user_agent(os: 'win', navigator: 'chrome')
-p generate_navigator_js(os: 'win', navigator: 'chrome')
