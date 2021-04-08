@@ -459,7 +459,7 @@ def generate_user_agent(os: nil, navigator: nil, platform: nil, device_type: nil
 end
 
 def generate_navigator_js(os: nil, navigator: nil, platform: nil, device_type: nil)
-  config = generate_navigator(os, navigator, platform, device_type)
+  config = generate_navigator(os: os, navigator: navigator, platform: platform, device_type: device_type)
   {
     'appCodeName' => config['app_code_name'],
     'appName' => config['app_name'],
@@ -475,4 +475,5 @@ def generate_navigator_js(os: nil, navigator: nil, platform: nil, device_type: n
   }
 end
 
-generate_user_agent(os: 11)
+p generate_user_agent(os: 'win', navigator: 'chrome')
+p generate_navigator_js(os: 'win', navigator: 'chrome')
