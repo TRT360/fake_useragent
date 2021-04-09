@@ -1,5 +1,5 @@
 # Fake User Agent
-## For what?
+## What is it for?
 Generates random valid web user agents
 
 ## Usage
