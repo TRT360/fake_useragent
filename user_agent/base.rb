@@ -1,10 +1,10 @@
-#! /usr/bin/env ruby
 # frozen_string_literal: true
 
-require 'securerandom'
 require 'time'
+require 'json'
 
 require_relative './error'
+require_relative './device'
 
 private
 
@@ -13,22 +13,26 @@ DEVICE_TYPE_OS = {
   'smartphone' => ['android'],
   'tablet' => ['android']
 }.freeze
+
 OS_DEVICE_TYPE = {
   'win' => ['desktop'],
   'linux' => ['desktop'],
   'mac' => ['desktop'],
   'android' => %w[smartphone tablet]
 }.freeze
+
 DEVICE_TYPE_NAVIGATOR = {
   'desktop' => %w[chrome firefox ie],
   'smartphone' => %w[firefox chrome],
   'tablet' => %w[firefox chrome]
 }.freeze
+
 NAVIGATOR_DEVICE_TYPE = {
   'ie' => ['desktop'],
   'chrome' => %w[desktop smartphone tablet],
   'firefox' => %w[desktop smartphone tablet]
 }.freeze
+
 OS_PLATFORM = {
   'win' => [
     'Windows NT 5.1', # Windows XP
@@ -66,6 +70,7 @@ OS_PLATFORM = {
     'Android 7.1.1' # 2016-12-05
   ]
 }.freeze
+
 OS_CPU = {
   'win' => [
     '', # 32bit
@@ -85,17 +90,20 @@ OS_CPU = {
     'armv8l' # 64bit
   ]
 }.freeze
+
 OS_NAVIGATOR = {
   'win' => %w[chrome firefox ie],
   'mac' => %w[firefox chrome],
   'linux' => %w[chrome firefox],
   'android' => %w[firefox chrome]
 }.freeze
+
 NAVIGATOR_OS = {
   'chrome' => %w[win linux mac android],
   'firefox' => %w[win linux mac android],
   'ie' => ['win']
 }.freeze
+
 FIREFOX_VERSION = [
   ['45.0', Time.new(2016, 3, 8)],
   ['46.0', Time.new(2016, 4, 26)],
@@ -104,10 +112,8 @@ FIREFOX_VERSION = [
   ['49.0', Time.new(2016, 9, 20)],
   ['50.0', Time.new(2016, 11, 15)],
   ['51.0', Time.new(2017, 1, 24)]
-].freeze
+]
 
-# Top chrome builds from website access log
-# for september, october 2020
 CHROME_BUILD = '80.0.3987.132
 80.0.3987.149
 80.0.3987.99
@@ -147,6 +153,7 @@ IE_VERSION = [
   [10, 'MSIE 10.0', '6.0'], # 2012
   [11, 'MSIE 11.0', '7.0'] # 2013
 ].freeze
+
 MACOSX_CHROME_BUILD_RANGE = {
   # https://en.wikipedia.org/wiki/MacOS#Release_history
   '10.8' => [0, 8],
@@ -169,7 +176,7 @@ def user_agent_template(tpl_name, system, app)
   when 'ie_less_11'
     "Mozilla/5.0 (compatible; #{app['build_version']}; #{system['ua_platform']}; Trident/#{app['trident_version']})"
   when 'ie_11'
-    "Mozilla/5.0 (#{system['ua_platform']}; Trident/#{app['trident_version']}; rv: 11.0) like Gecko"
+    "Mozilla/5.0 (#{system['ua_platform']}; Trident/#{app['trident_version']}; rv:11.0) like Gecko"
   end
 end
 
@@ -187,7 +194,7 @@ def firefox_build
   sec_range = date_to - date_from
   build_rnd_time = Time.at(date_from + rand(sec_range))
 
-  [build_ver, build_rnd_time.strftime('%y%m%d%H%M%S')]
+  [build_ver, build_rnd_time.strftime('%Y%m%d%H%M%S')]
 end
 
 def chrome_build
@@ -325,13 +332,13 @@ def option_choices(opt_title, opt_value, default_value, all_choices)
   elsif opt_value.nil?
     choices = default_value
   else
-    raise InvalidOption "Option #{opt_title} has invalid value: #{opt_value}"
+    raise InvalidOption, "Option #{opt_title} has invalid value: #{opt_value}"
   end
 
   choices = all_choices if choices.include? 'all'
 
   choices.each do |item|
-    raise InvalidOption "Choices of option #{opt_title} contains invalid item: #{item}" unless all_choices.include? item
+    raise InvalidOption, "Choices of option #{opt_title} contains invalid item: #{item}" unless all_choices.include? item
   end
   choices
 end
@@ -373,9 +380,9 @@ def pick_config_ids(device_type, os, navigator)
 
   device_type, os_id, navigator_id = variants.sample
 
-  raise 'os_id not in OS_PLATFORM' unless OS_PLATFORM.include? os_id
-  raise 'navigator_id not in NAVIGATOR_OS' unless NAVIGATOR_OS.include? navigator_id
-  raise 'navigator_id not in DEVICE_TYPE_IDS' unless DEVICE_TYPE_OS.include? device_type
+  raise InvalidOption, 'os_id not in OS_PLATFORM' unless OS_PLATFORM.include? os_id
+  raise InvalidOption, 'navigator_id not in NAVIGATOR_OS' unless NAVIGATOR_OS.include? navigator_id
+  raise InvalidOption, 'navigator_id not in DEVICE_TYPE_IDS' unless DEVICE_TYPE_OS.include? device_type
 
   [device_type, os_id, navigator_id]
 end
@@ -423,7 +430,7 @@ def build_navigator_app_version(os_id, navigator_id, platform_version, user_agen
 end
 
 def generate_navigator(os: nil, navigator: nil, platform: nil, device_type: nil)
-  if !platform.nil?
+  unless platform.nil?
     os = platform
     warn('The `platform` version is deprecated. Use `os` option instead', uplevel: 3)
   end
@@ -466,7 +473,7 @@ def generate_navigator_js(os: nil, navigator: nil, platform: nil, device_type: n
     'appVersion' => config['app_version'],
     'platform' => config['platform'],
     'userAgent' => config['user_agent'],
-    'os_cpu' => config['os_cpu'],
+    'oscpu' => config['os_cpu'],
     'product' => config['product'],
     'productSub' => config['product_sub'],
     'vendor' => config['vendor'],
