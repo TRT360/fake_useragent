@@ -24,16 +24,16 @@ generate_user_agent(device_type: %w[smartphone tablet], navigator: 'chrome')
 
 generate_navigator_js # 
 # → {"appCodeName"=>"Mozilla",
- "appName"=>"Netscape",
- "appVersion"=>"5.0 (Macintosh)",
- "platform"=>"MacIntel",
- "userAgent"=>
-  "Mozilla/5.0 (Macintosh; Intel Mac OS X 10.10; rv:48.0) Gecko/20100101 Firefox/48.0",
- "oscpu"=>"Intel Mac OS X 10.10",
- "product"=>"Gecko",
- "productSub"=>"20100101",
- "vendor"=>"",
- "vendorSub"=>"",
- "buildID"=>"20160808222632"}
+# "appName"=>"Netscape",
+# "appVersion"=>"5.0 (Macintosh)",
+# "platform"=>"MacIntel",
+# "userAgent"=>
+#  "Mozilla/5.0 (Macintosh; Intel Mac OS X 10.10; rv:48.0) Gecko/20100101 Firefox/48.0",
+# "oscpu"=>"Intel Mac OS X 10.10",
+# "product"=>"Gecko",
+# "productSub"=>"20100101",
+# "vendor"=>"",
+# "vendorSub"=>"",
+# "buildID"=>"20160808222632"}
 ```
 
