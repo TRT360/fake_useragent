@@ -1,8 +1,8 @@
 # frozen_string_literal: true
 
 require 'minitest/autorun'
-require 'fake_useragent'
-require './fake_useragent/error'
+require './lib/fake_useragent'
+require './lib/fake_useragent/error'
 
 class TestSuite < Minitest::Test
   def test_platform
