@@ -1,29 +1,28 @@
 # frozen_string_literal: true
 
-require 'test/unit'
-require './lib/fake_useragent'
-require './lib/fake_useragent/error'
+require 'minitest/autorun'
+require 'fake_useragent'
+require './fake_useragent/error'
 
-class TestSuite < Test::Unit::TestCase
-  include Test::Unit::Assertions
+class TestSuite < Minitest::Test
   def test_platform
     50.times do
-      assert_include(generate_user_agent(os: 'linux'), 'Linux', 'Linux not in `ua`, where os: `linux`')
-      assert_include(generate_user_agent(os: 'win'), 'Windows', 'Windows not in `ua`, where os: `win`')
-      assert_include(generate_user_agent(os: 'mac'), 'Mac', 'Mac not in `ua`, where os: `mac`')
+      assert_includes(generate_user_agent(os: 'linux'), 'Linux', 'Linux not in `ua`, where os: `linux`')
+      assert_includes(generate_user_agent(os: 'win'), 'Windows', 'Windows not in `ua`, where os: `win`')
+      assert_includes(generate_user_agent(os: 'mac'), 'Mac', 'Mac not in `ua`, where os: `mac`')
     end
   end
 
   def test_invalid_platform
-    assert_raise(InvalidOption) { generate_user_agent(os: 11) }
-    assert_raise(InvalidOption) { generate_user_agent(os: 'minecraft') }
-    assert_raise(InvalidOption) { generate_user_agent(os: 'Putin, Sabaton, win') }
+    assert_raises(InvalidOption) { generate_user_agent(os: 11) }
+    assert_raises(InvalidOption) { generate_user_agent(os: 'minecraft') }
+    assert_raises(InvalidOption) { generate_user_agent(os: 'Putin, Sabaton, win') }
   end
 
   def test_navigator
     50.times do
-      assert_include(generate_user_agent(navigator: 'firefox'), 'Firefox', 'Firefox not in `ua`, where navigator: `firefox`')
-      assert_include(generate_user_agent(navigator: 'chrome'), 'Chrome', 'Chrome not in `ua`, where navigator: `chrome`')
+      assert_includes(generate_user_agent(navigator: 'firefox'), 'Firefox', 'Firefox not in `ua`, where navigator: `firefox`')
+      assert_includes(generate_user_agent(navigator: 'chrome'), 'Chrome', 'Chrome not in `ua`, where navigator: `chrome`')
       # not passing
       agent = generate_user_agent(navigator: 'ie')
       assert((agent.include? 'MSIE') || (agent.include? 'rv:11'))
@@ -31,29 +30,25 @@ class TestSuite < Test::Unit::TestCase
   end
 
   def test_invalid_navigator
-    assert_raise(InvalidOption) { generate_user_agent(navigator: 'win') }
-    assert_raise(InvalidOption) { generate_user_agent(navigator: 'linux, mac') }
+    assert_raises(InvalidOption) { generate_user_agent(navigator: 'win') }
+    assert_raises(InvalidOption) { generate_user_agent(navigator: 'linux, mac') }
   end
 
   def test_invalid_navigator_array
     50.times do
-      assert_nothing_raised do
-        generate_user_agent(navigator: %w[firefox])
-        generate_user_agent(navigator: %w[firefox chrome])
-        generate_user_agent(navigator: %w[firefox chrome ie])
-      end
+      generate_user_agent(navigator: %w[firefox])
+      generate_user_agent(navigator: %w[firefox chrome])
+      generate_user_agent(navigator: %w[firefox chrome ie])
     end
   end
 
   def test_platform_array
     50.times do
-      assert_nothing_raised do
-        generate_user_agent(os: %w[win linux mac])
-        generate_user_agent(os: %w[mac])
-        generate_user_agent(os: %w[win linux])
-        generate_user_agent(os: %w[linux])
-        generate_user_agent(os: %w[win])
-      end
+      generate_user_agent(os: %w[win linux mac])
+      generate_user_agent(os: %w[mac])
+      generate_user_agent(os: %w[win linux])
+      generate_user_agent(os: %w[linux])
+      generate_user_agent(os: %w[win])
     end
   end
 
@@ -83,8 +78,8 @@ class TestSuite < Test::Unit::TestCase
 
   def test_impossible_combination
     50.times do
-      assert_raise(InvalidOption) { generate_user_agent(os: 'linux', navigator: 'ie') }
-      assert_raise(InvalidOption) { generate_user_agent(os: 'mac', navigator: 'ie') }
+      assert_raises(InvalidOption) { generate_user_agent(os: 'linux', navigator: 'ie') }
+      assert_raises(InvalidOption) { generate_user_agent(os: 'mac', navigator: 'ie') }
     end
   end
 
@@ -206,19 +201,19 @@ class TestSuite < Test::Unit::TestCase
 
   def test_invalid_device_type
     50.times do
-      assert_raise(InvalidOption) { generate_user_agent(device_type: 'computer') }
+      assert_raises(InvalidOption) { generate_user_agent(device_type: 'computer') }
     end
   end
 
   def invalid_device_type_with_os
     50.times do
-      assert_raise(InvalidOption) { generate_user_agent(os: 'win', device_type: 'smartphone') }
+      assert_raises(InvalidOption) { generate_user_agent(os: 'win', device_type: 'smartphone') }
     end
   end
 
   def invalid_dev_type_with_nav
     50.times do
-      assert_raise(InvalidOption) { generate_user_agent(device_type: 'smartphone', navigator: 'ie') }
+      assert_raises(InvalidOption) { generate_user_agent(device_type: 'smartphone', navigator: 'ie') }
     end
   end
 
@@ -238,8 +233,8 @@ class TestSuite < Test::Unit::TestCase
 
   def dev_type_smartphone_chrome
     50.times do
-      assert_include(generate_user_agent(device_type: 'smartphone', navigator: 'chrome'), 'Mobile')
-      assert_include(generate_user_agent(device_type: 'tablet', navigator: 'chrome'), 'Mobile')
+      assert_includes(generate_user_agent(device_type: 'smartphone', navigator: 'chrome'), 'Mobile')
+      assert_includes(generate_user_agent(device_type: 'tablet', navigator: 'chrome'), 'Mobile')
     end
   end
 end

@@ -11,5 +11,4 @@ Gem::Specification.new do |s|
   s.homepage    = 'https://github.com/TRT360/fake_useragent'
   s.license     = 'MIT'
   s.files       = `git ls-files`.split("\n")
-  s.add_dependency('test/unit')
 end
