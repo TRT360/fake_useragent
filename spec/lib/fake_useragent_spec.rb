@@ -1,10 +1,8 @@
-#! /usr/bin/env ruby
 # frozen_string_literal: true
 
-$LOAD_PATH << File.dirname(__FILE__)
 require 'test/unit'
-require_relative '../user_agent/base'
-require_relative '../user_agent/error'
+require './lib/fake_useragent'
+require './lib/fake_useragent/error'
 
 class TestSuite < Test::Unit::TestCase
   include Test::Unit::Assertions

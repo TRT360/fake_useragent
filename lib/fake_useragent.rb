@@ -2,9 +2,10 @@
 
 require 'time'
 require 'json'
+require 'pp'
 
-require_relative './error'
-require_relative './device'
+require_relative './fake_useragent/error'
+require_relative './fake_useragent/device'
 
 private
 
