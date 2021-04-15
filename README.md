@@ -3,6 +3,9 @@
 ## For what?
 Generates random valid web user agents
 
+## Installation
+`gem install fake_useragent`
+
 ## Usage example:
 This version just a test. You can use `generate_user_agent` or `generate_navigator_js` from `base.rb`.  
 
