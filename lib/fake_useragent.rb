@@ -4,11 +4,11 @@ require_relative './fake_useragent/core'
 public 
 
 def generate_user_agent(os: nil, navigator: nil, platform: nil, device_type: nil)
-  generate_navigator(os: os, navigator: navigator, platform: platform, device_type: device_type)['user_agent']
+  Core.generate_navigator(os: os, navigator: navigator, platform: platform, device_type: device_type)['user_agent']
 end
 
 def generate_navigator_js(os: nil, navigator: nil, platform: nil, device_type: nil)
-  config = generate_navigator(os: os, navigator: navigator, platform: platform, device_type: device_type)
+  config = Core.generate_navigator(os: os, navigator: navigator, platform: platform, device_type: device_type)
   {
     'appCodeName' => config['app_code_name'],
     'appName' => config['app_name'],
