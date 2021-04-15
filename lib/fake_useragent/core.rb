@@ -472,7 +472,6 @@ module Core
     :fix_chrome_mac_platform
   )
   private_constant(
-    :FIREFOX_VERSION,
     :IE_VERSION,
     :DEVICE_TYPE_OS,
     :NAVIGATOR_OS,

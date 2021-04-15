@@ -2,6 +2,7 @@
 
 require 'minitest/autorun'
 require './lib/fake_useragent'
+require './lib/fake_useragent/core'
 require './lib/fake_useragent/error'
 
 class TestSuite < Minitest::Test
@@ -94,7 +95,7 @@ class TestSuite < Minitest::Test
 
   def test_data_integrity
     50.times do
-      navigator = generate_navigator
+      navigator = Core.generate_navigator
       navigator.each_value do |value|
         assert(value.nil? || (value.instance_of? String))
       end
@@ -103,22 +104,22 @@ class TestSuite < Minitest::Test
 
   def test_feature_platform
     50.times do
-      nav = generate_navigator(os: 'win')
+      nav = Core.generate_navigator(os: 'win')
       assert nav['platform'].include? 'Win'
-      nav = generate_navigator(os: 'linux')
+      nav = Core.generate_navigator(os: 'linux')
       assert nav['platform'].include? 'Linux'
-      nav = generate_navigator(os: 'mac')
+      nav = Core.generate_navigator(os: 'mac')
       assert nav['platform'].include? 'MacIntel'
     end
   end
 
   def test_feature_os_cpu
     10.times do
-      nav = generate_navigator(os: 'win')
+      nav = Core.generate_navigator(os: 'win')
       assert nav['os_cpu'].include? 'Windows NT'
-      nav = generate_navigator(os: 'linux')
+      nav = Core.generate_navigator(os: 'linux')
       assert nav['os_cpu'].include? 'Linux'
-      nav = generate_navigator(os: 'mac')
+      nav = Core.generate_navigator(os: 'mac')
       assert nav['os_cpu'].include? 'Mac OS'
     end
   end
@@ -152,22 +153,22 @@ class TestSuite < Minitest::Test
 
   def test_build_id_no_firefox
     50.times do
-      nav = generate_navigator(navigator: 'chrome')
+      nav = Core.generate_navigator(navigator: 'chrome')
       assert nav['build_id'] == ''
-      nav = generate_navigator(navigator: 'ie')
+      nav = Core.generate_navigator(navigator: 'ie')
       assert nav['build_id'] == ''
     end
   end
 
   def test_build_id_firefox
-    original_ff_version = FIREFOX_VERSION.clone
-    FIREFOX_VERSION.replace [
+    original_ff_version = Core::FIREFOX_VERSION.clone
+    Core::FIREFOX_VERSION.replace [
       ['49.0', Time.new(2016, 9, 20)],
       ['50.0', Time.new(2016, 11, 15)]
     ].freeze
     begin
       50.times do
-        nav = generate_navigator(navigator: 'firefox')
+        nav = Core.generate_navigator(navigator: 'firefox')
         assert nav['build_id'].length == 14
         if nav['user_agent'].include? '50.0'
           assert nav['build_id'].start_with? '20161115'
@@ -177,7 +178,7 @@ class TestSuite < Minitest::Test
         end
       end
     ensure
-      FIREFOX_VERSION.replace original_ff_version
+      Core::FIREFOX_VERSION.replace original_ff_version
     end
   end
 
