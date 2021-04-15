@@ -1,6 +1,8 @@
 # frozen_string_literal: true
 require_relative './fake_useragent/core'
 
+public 
+
 def generate_user_agent(os: nil, navigator: nil, platform: nil, device_type: nil)
   generate_navigator(os: os, navigator: navigator, platform: platform, device_type: device_type)['user_agent']
 end

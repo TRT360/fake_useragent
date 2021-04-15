@@ -5,6 +5,8 @@ require 'pp'
 require_relative 'error'
 require_relative 'device'
 
+private
+
 DEVICE_TYPE_OS = {
   'desktop' => %w[win mac linux],
   'smartphone' => ['android'],
