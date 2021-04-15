@@ -7,7 +7,7 @@ Generates random valid web user agents
 `gem install fake_useragent`
 
 ## Usage example:
-This version just a test. You can use `generate_user_agent` or `generate_navigator_js` from `base.rb`.  
+This version just a test. You can use `generate_user_agent`, or `generate_navigator_js`
 
 parameters: `os`, `navigator`, `device_type` and `platform` (deprecated)  
 Possible values:  
