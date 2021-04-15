@@ -3,7 +3,7 @@ require 'json'
 require 'pp'
 
 require_relative 'error'
-require_relative './fake_useragent/device'
+require_relative 'device'
 
 DEVICE_TYPE_OS = {
   'desktop' => %w[win mac linux],
