@@ -1,5 +1,5 @@
 # Fake User Agent
-
+[![Gem Version](https://badge.fury.io/rb/fake_useragent.svg)](https://badge.fury.io/rb/fake_useragent)  
 ## What is it for?
 Simple gem used for generating random valid web user agents.  
 User agent is a part of HTTP headers and window.navigator JS object.  
