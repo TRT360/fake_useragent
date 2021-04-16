@@ -1,16 +1,17 @@
 # Fake User Agent
 
-## For what?
-Generates random valid web user agents
+## What is it for?
+Simple gem used for generating random valid web user agents.  
+User agent is a part of HTTP headers and window.navigator JS object.  
 
 ## Installation
 `gem install fake_useragent`
 
 ## Usage example:
-This version just a test. You can use `generate_user_agent`, or `generate_navigator_js`
+You can use `generate_user_agent` or `generate_navigator_js`
 
 parameters: `os`, `navigator`, `device_type` and `platform` (deprecated)  
-Possible values:  
+Possible values (strings or string arrays):  
 `os`: `win`, `linux`, `mac`  
 `navigator`: `ie`, `chrome` or `firefox`  
 `device_type`: `desktop`, `smartphone`, `tablet` or `all`  
