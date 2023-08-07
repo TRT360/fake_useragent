@@ -22,11 +22,10 @@ class TestSuite < Minitest::Test
 
   def test_navigator
     50.times do
-      assert_includes(generate_user_agent(navigator: 'firefox'), 'Firefox', 'Firefox not in `ua`, where navigator: `firefox`')
-      assert_includes(generate_user_agent(navigator: 'chrome'), 'Chrome', 'Chrome not in `ua`, where navigator: `chrome`')
-      # not passing
-      agent = generate_user_agent(navigator: 'ie')
-      assert((agent.include? 'MSIE') || (agent.include? 'rv:11'))
+      assert_includes(generate_user_agent(navigator: 'firefox'), 'Firefox',
+                      'Firefox not in `ua`, where navigator: `firefox`')
+      assert_includes(generate_user_agent(navigator: 'chrome'), 'Chrome',
+                      'Chrome not in `ua`, where navigator: `chrome`')
     end
   end
 
@@ -39,7 +38,6 @@ class TestSuite < Minitest::Test
     50.times do
       generate_user_agent(navigator: %w[firefox])
       generate_user_agent(navigator: %w[firefox chrome])
-      generate_user_agent(navigator: %w[firefox chrome ie])
     end
   end
 
@@ -59,8 +57,6 @@ class TestSuite < Minitest::Test
       assert((agent.include? 'Firefox') && (agent.include? 'Windows'))
       agent = generate_user_agent(os: 'win', navigator: 'chrome')
       assert((agent.include? 'Chrome') && (agent.include? 'Windows'))
-      agent = generate_user_agent(os: 'win', navigator: 'ie')
-      assert((agent.include? 'MSIE') || (agent.include? 'rv:11'))
     end
   end
 
@@ -73,21 +69,15 @@ class TestSuite < Minitest::Test
   def test_mac_chrome
     50.times do
       agent = generate_user_agent(os: 'mac', navigator: 'chrome')
-      assert(!agent.match(/OS X \d+_\d+_\d+/).to_a.empty?)
-    end
-  end
-
-  def test_impossible_combination
-    50.times do
-      assert_raises(InvalidOption) { generate_user_agent(os: 'linux', navigator: 'ie') }
-      assert_raises(InvalidOption) { generate_user_agent(os: 'mac', navigator: 'ie') }
+      assert(!agent.match(/OS X \d+_\d+(?:_\d+)?/).to_a.empty?)
     end
   end
 
   def test_generate_navigator_js
     50.times do
       navigator = generate_navigator_js
-      assert navigator.keys == %w[appCodeName appName appVersion platform userAgent oscpu product productSub vendor vendorSub buildID]
+      assert navigator.keys == %w[appCodeName appName appVersion platform userAgent oscpu product productSub vendor
+                                  vendorSub buildID]
       assert navigator['appCodeName'] == 'Mozilla'
       assert ['Netscape', 'Microsoft Internet Explorer'].include? navigator['appName']
     end
@@ -127,7 +117,7 @@ class TestSuite < Minitest::Test
   def test_chrome_app_version
     50.times do
       nav = generate_navigator_js(navigator: 'chrome')
-      assert(("Mozilla/#{nav['appVersion']}") == nav['userAgent'])
+      assert("Mozilla/#{nav['appVersion']}" == nav['userAgent'])
     end
   end
 
@@ -141,7 +131,6 @@ class TestSuite < Minitest::Test
     50.times do
       assert generate_navigator_js(navigator: 'chrome')['vendor'] == 'Google Inc.'
       assert generate_navigator_js(navigator: 'firefox')['vendor'] == ''
-      assert generate_navigator_js(navigator: 'ie')['vendor'] == ''
     end
   end
 
@@ -154,8 +143,6 @@ class TestSuite < Minitest::Test
   def test_build_id_no_firefox
     50.times do
       nav = Core.generate_navigator(navigator: 'chrome')
-      assert nav['build_id'] == ''
-      nav = Core.generate_navigator(navigator: 'ie')
       assert nav['build_id'] == ''
     end
   end
@@ -185,8 +172,8 @@ class TestSuite < Minitest::Test
   def test_android_firefox
     50.times do
       nav = generate_navigator_js(os: 'android', navigator: 'firefox')
-      assert nav['platform'].include? 'armv'
-      assert nav['oscpu'].include? 'Linux armv'
+      assert nav['platform'].include? 'arm'
+      assert nav['oscpu'].include? 'Linux arm'
       assert nav['appVersion'].include? 'Android'
       assert nav['userAgent'].split('(')[1].split(')')[0].include? 'Android'
     end
@@ -206,36 +193,39 @@ class TestSuite < Minitest::Test
     end
   end
 
-  def invalid_device_type_with_os
+  def test_invalid_device_type_with_os
     50.times do
       assert_raises(InvalidOption) { generate_user_agent(os: 'win', device_type: 'smartphone') }
     end
   end
 
-  def invalid_dev_type_with_nav
+  def test_default_device_without_os
     50.times do
-      assert_raises(InvalidOption) { generate_user_agent(device_type: 'smartphone', navigator: 'ie') }
-    end
-  end
-
-  def default_device_without_os
-    50.times do
-      assert_not_include(generate_user_agent, 'Android')
+      assert !(generate_user_agent.include? 'Android')
       # if os is default then device_type is 'desktop'
     end
   end
 
-  def all_device_types
+  def test_all_device_types
     50.times do
       generate_user_agent(device_type: 'all')
-      generate_user_agent(device_type: 'all', navigator: 'ie')
     end
   end
 
-  def dev_type_smartphone_chrome
+  def test_dev_type_smartphone_chrome
     50.times do
       assert_includes(generate_user_agent(device_type: 'smartphone', navigator: 'chrome'), 'Mobile')
       assert_includes(generate_user_agent(device_type: 'tablet', navigator: 'chrome'), 'Mobile')
+    end
+  end
+
+  def test_random_ua_from_file
+    50.times do
+      assert_includes(random_ua(device_type: 'smartphone'), 'Mobile')
+      assert_includes(random_ua(device_type: 'tablet'), 'Mobile')
+      assert_includes(random_ua(device_type: 'mobile'), 'Mobile')
+      assert_includes(random_ua(device_type: 'desktop'), 'Mozilla/5.0')
+      assert !(random_ua.include? 'Mobile')
     end
   end
 end

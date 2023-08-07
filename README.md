@@ -1,21 +1,25 @@
 # Fake User Agent
-[![Gem Version](https://badge.fury.io/rb/fake_useragent.svg)](https://badge.fury.io/rb/fake_useragent)  
-## What is it for?
-Simple gem used for generating random valid web user agents.  
-User agent is a part of HTTP headers and window.navigator JS object.  
+
+[![Gem Version](https://badge.fury.io/rb/fake_useragent.svg)](https://badge.fury.io/rb/fake_useragent)
+
+## Overview
+
+Fake User Agent is a simple gem used for generating random valid web user agents. The user agent is a part of HTTP headers and the window.navigator JS object.
 
 ## Installation
-`gem install fake_useragent`
 
-## Usage example:
-You can use `generate_user_agent` or `generate_navigator_js`
+To install the gem, use the following command:
 
-parameters: `os`, `navigator`, `device_type` and `platform` (deprecated)  
-Possible values (strings or string arrays):  
-`os`: `win`, `linux`, `mac`  
-`navigator`: `ie`, `chrome` or `firefox`  
-`device_type`: `desktop`, `smartphone`, `tablet` or `all`  
-Keep in mind array combinations are possible.
+```text
+gem install fake_useragent
+```
+
+## Usage
+
+You can generate user agents using the `generate_user_agent`, `generate_navigator_js` or `random_ua` methods. You can provide parameters such as `os`, `navigator`, `device_type`, and `platform` (deprecated) to customize the user agent. These parameters accept strings or arrays of strings for various combinations.
+
+Here are some usage examples:
+
 ```ruby
 generate_user_agent(os: %w[win linux])
 # → "Mozilla/5.0 (X11; Linux; i686 on x86_64) AppleWebKit/537.36 (KHTML, like Gecko) ..."
@@ -26,7 +30,7 @@ generate_user_agent(os: %w[win linux], device_type: 'all')
 generate_user_agent(device_type: %w[smartphone tablet], navigator: 'chrome')
 # → "Mozilla/5.0 (Linux; Android 4.4.1; Lenovo S850 Build/KOT49H) AppleWebKit/537.36 ..."
 
-generate_navigator_js # 
+generate_navigator_js
 # → {"appCodeName"=>"Mozilla",
 # "appName"=>"Netscape",
 # "appVersion"=>"5.0 (Macintosh)",
@@ -39,5 +43,12 @@ generate_navigator_js #
 # "vendor"=>"",
 # "vendorSub"=>"",
 # "buildID"=>"20160808222632"}
+
+random_ua
+# Mozilla/5.0 (Macintosh; Intel Mac OS X 11_1) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/100...
+
+random_ua(device_type: 'mobile')
+#
 ```
 
+## [Changelog](https://github.com/TRT360/fake_useragent/blob/main/CHANGELOG.md)

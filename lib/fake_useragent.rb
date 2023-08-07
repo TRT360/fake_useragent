@@ -1,14 +1,15 @@
 # frozen_string_literal: true
+
 require_relative './fake_useragent/core'
 
-public 
+public
 
 def generate_user_agent(os: nil, navigator: nil, platform: nil, device_type: nil)
-  Core.generate_navigator(os: os, navigator: navigator, platform: platform, device_type: device_type)['user_agent']
+  Core.generate_navigator(os:, navigator:, platform:, device_type:)['user_agent']
 end
 
 def generate_navigator_js(os: nil, navigator: nil, platform: nil, device_type: nil)
-  config = Core.generate_navigator(os: os, navigator: navigator, platform: platform, device_type: device_type)
+  config = Core.generate_navigator(os:, navigator:, platform:, device_type:)
   {
     'appCodeName' => config['app_code_name'],
     'appName' => config['app_name'],
@@ -22,4 +23,8 @@ def generate_navigator_js(os: nil, navigator: nil, platform: nil, device_type: n
     'vendorSub' => config['vendor_sub'],
     'buildID' => config['build_id']
   }
+end
+
+def random_ua(device_type: nil)
+  Core.random_ua(device_type: )
 end

@@ -1,7 +1,7 @@
-require 'rake/testtask'
+require "rake/testtask"
 
 Rake::TestTask.new do |t|
-  t.libs << 'lib' << 'spec'
+  t.libs << "lib" << "spec"
   t.pattern = "spec/**/test_*.rb"
 end
 

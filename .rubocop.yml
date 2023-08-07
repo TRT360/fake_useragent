@@ -1,0 +1,4 @@
+AllCops:
+  TargetRubyVersion: 3.2.x
+  EnabledByDefault: true
+  AutocorrectNotice: "Please review the changes made by RuboCop auto-correct."
